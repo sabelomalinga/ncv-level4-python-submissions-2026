@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Computer Hardware &amp; Software Tutorial</title>
+<style>
+:root{
+  --navy:#005596; --navy-d:#1B2A41; --gold:#FDB515; --gold-l:#FFF5D6; --crimson:#C3092B;
+  --green:#1E8E3E; --green-l:#E6F4EA; --red-l:#FDECEE; --blue-l:#EEF5FA; --blue-m:#DCE8F5;
+  --ink:#1d2530; --muted:#5b6675; --line:#d5dde6; --bg:#f6f8fb; --card:#ffffff;
+  --code-bg:#fbfcfe; --hl:#FFF0A8; --mono:Consolas,"Cascadia Mono","DejaVu Sans Mono",Menlo,monospace;
+}
+*{box-sizing:border-box}
+html{font-size:17px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI",Arial,system-ui,sans-serif;line-height:1.45}
+button{font:inherit;cursor:pointer}
+code,.mono{font-family:var(--mono)}
+code{background:var(--blue-l);padding:0 .25em;border-radius:4px;font-size:.92em}
+
+/* ---------- top bar ---------- */
+#top{position:sticky;top:0;z-index:50;background:var(--navy-d);color:#fff;display:flex;align-items:center;gap:.6rem;padding:.35rem .8rem;flex-wrap:wrap}
+#top .brand{font-weight:700;white-space:nowrap}
+#top .brand span{color:var(--gold)}
+#nav{display:flex;gap:.25rem;flex-wrap:wrap;flex:1}
+#nav button{background:transparent;color:#cfe0f5;border:1px solid #3d5373;border-radius:999px;padding:.12rem .55rem;font-size:.78rem;white-space:nowrap}
+#nav button.on{background:var(--gold);color:var(--navy-d);border-color:var(--gold);font-weight:700}
+#nav button.done::after{content:" ✓";color:#7ee08f}
+#nav button.on.done::after{color:var(--green)}
+.tb{display:flex;gap:.3rem;align-items:center;flex-wrap:wrap}
+.tb button{background:#2c3e5a;color:#fff;border:1px solid #4a6286;border-radius:6px;padding:.15rem .5rem;font-size:.8rem}
+.tb button.on{background:var(--gold);color:var(--navy-d);border-color:var(--gold);font-weight:700}
+.tb .lbl{font-size:.72rem;color:#cfe0f5;text-transform:uppercase;letter-spacing:.05em}
+#progress{height:4px;background:#3d5373}
+#progress i{display:block;height:100%;background:var(--gold);width:0;transition:width .3s}
+
+/* ---------- blocks ---------- */
+main{max-width:1240px;margin:0 auto;padding:1rem 1rem 7rem}
+body.guide-open main{padding-bottom:60vh}
+section.block{display:none}
+section.block.active{display:block;animation:fade .25s}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+.bhead h1{margin:.2rem 0 0;font-size:1.9rem;color:var(--navy);line-height:1.15}
+.chip{display:inline-block;background:var(--navy);color:#fff;border-radius:999px;padding:.1rem .65rem;font-size:.8rem;font-weight:600}
+.chip.gold{background:var(--gold);color:var(--navy-d)}
+.kicker{color:var(--muted);margin:.3rem 0 .8rem;font-size:1.05rem}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem}
+.grid2>*,.grid3>*{min-width:0}
+@media (max-width:900px){.grid2,.grid3{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1rem}
+.card h2{margin:.1rem 0 .5rem;font-size:1.25rem;color:var(--navy)}
+.card h3{margin:.6rem 0 .3rem;font-size:1.05rem}
+.card p{margin:.35rem 0}
+.analogy{background:var(--gold-l);border:1px solid #f1d88a;border-left:6px solid var(--gold);border-radius:10px;padding:.7rem 1rem;margin:.6rem 0}
+.analogy b.t{display:block;color:#7a5600;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em}
+.key{background:var(--blue-l);border-left:6px solid var(--navy);border-radius:10px;padding:.6rem 1rem;margin:.6rem 0}
+.warn{background:var(--red-l);border-left:6px solid var(--crimson);border-radius:10px;padding:.55rem .9rem;margin:.6rem 0}
+.task{border:2px solid var(--green);background:linear-gradient(#fff,#fbfffc)}
+.task h2{color:var(--green)}
+.task h2::before{content:"💻 "}
+.challenge{border:2px dashed var(--crimson)}
+.challenge h2{color:var(--crimson)}
+.challenge h2::before{content:"🎯 "}
+.btn{background:var(--navy);color:#fff;border:0;border-radius:8px;padding:.35rem .8rem;font-size:.9rem;margin:.15rem .2rem .15rem 0}
+.btn:hover{filter:brightness(1.12)}
+.btn.alt{background:#fff;color:var(--navy);border:1px solid var(--navy)}
+.btn.green{background:var(--green)}
+.btn.red{background:var(--crimson)}
+.btn:disabled{opacity:.4;cursor:not-allowed;filter:none}
+.hidden{display:none!important}
+.reveal-box{background:var(--green-l);border:1px solid #a8d5b5;border-radius:10px;padding:.6rem 1rem;margin:.5rem 0}
+.small{font-size:.86rem;color:var(--muted)}
+.panel-t{font-size:.75rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:.5rem}
+table.keys{border-collapse:collapse;width:100%;font-size:.92rem}
+table.keys td,table.keys th{border-bottom:1px solid var(--line);padding:.25rem .4rem;text-align:left;vertical-align:middle}
+table.keys th{color:var(--muted);font-size:.78rem;text-transform:uppercase}
+.loop4{display:flex;gap:.5rem;flex-wrap:wrap;margin:.5rem 0}
+.loop4 div{flex:1;min-width:9rem;background:var(--blue-l);border-radius:10px;padding:.45rem .6rem;text-align:center;font-size:.9rem}
+.loop4 div b{display:block;font-size:1.05rem;color:var(--navy)}
+.loop4 div.star{background:var(--gold-l);outline:2px solid var(--gold)}
+
+/* ---------- code ---------- */
+.code{font-family:var(--mono);font-size:.9rem;background:var(--code-bg);border:1px solid var(--line);border-radius:10px;overflow:auto;padding:.4rem 0;margin:.3rem 0}
+.code .ln{display:flex;min-height:1.45em;white-space:pre}
+.code .gut{flex:0 0 2.8em;text-align:right;padding-right:.7em;color:#8a96a5;user-select:none;position:relative}
+.code .src{flex:1;padding-right:1em}
+.code .ln.cur{background:var(--hl)}
+.code .ln.cur .gut{color:var(--ink);font-weight:700}
+.code .ln.cur .gut::before{content:"▶";position:absolute;left:.25em;color:#c47f00}
+.code .ln.pick{cursor:pointer}
+.code .ln.pick:hover{background:var(--blue-l)}
+.code .ln.wrong{background:var(--red-l)}
+.code .ln.right{background:var(--green-l)}
+.k{color:#0033b3;font-weight:600}.s{color:#067d17}.n{color:#1750eb}
+.shell{font-family:var(--mono);font-size:.9rem;background:var(--navy-d);color:#e9f0f8;border-radius:10px;padding:.45rem .8rem;min-height:2.6em;white-space:pre-wrap;margin:.3rem 0}
+.shell:empty::before{content:"(no output yet)";color:#8fa3bb}
+
+/* ---------- simulator ---------- */
+.sim{border:2px solid var(--navy);border-radius:14px;background:#fff;padding:.6rem .8rem;margin:.6rem 0}
+.sim .bar{display:flex;flex-wrap:wrap;gap:.4rem .9rem;align-items:center;border-bottom:1px solid var(--line);padding-bottom:.5rem}
+.sim .bar .grp{display:flex;align-items:center;gap:.35rem;flex-wrap:wrap}
+.sim .bar label{font-weight:600;font-size:.9rem}
+.sim .bar output{font-family:var(--mono);font-weight:700;color:var(--navy);min-width:3.2em;display:inline-block}
+.sim input[type=range]{width:9rem;accent-color:var(--navy)}
+.sim .ctl{margin-left:auto;display:flex;gap:.3rem}
+.sim .ctl button,.sim .chipbtn{border:1px solid #b9c4d0;background:#f4f7fa;border-radius:8px;padding:.25rem .6rem;font-size:.88rem}
+.sim .ctl button:not(:disabled):hover,.sim .chipbtn:hover{background:var(--blue-m)}
+.sim .ctl button:disabled{opacity:.35;cursor:not-allowed}
+.sim .ctl button.go{background:var(--green);color:#fff;border-color:var(--green);font-weight:700}
+.sim .chipbtn.sel{background:var(--navy);color:#fff;border-color:var(--navy);font-weight:700}
+.sim .body{display:grid;grid-template-columns:1.05fr 1fr;gap:.9rem;margin-top:.5rem}
+.sim .body>*{min-width:0}
+@media (max-width:900px){.sim .body{grid-template-columns:1fr}}
+.sim .status{font-size:.95rem;padding:.4rem .7rem;border-radius:8px;background:var(--blue-l);margin:.5rem 0 0;min-height:2.4em}
+.sim .status.run{background:var(--hl)}
+.sim .status.end{background:var(--green-l)}
+.sim .pred{font-size:.9rem;margin-top:.45rem;display:flex;gap:.35rem;align-items:center;flex-wrap:wrap}
+.sim .pred .fb{font-weight:700}
+.sim .pred .fb.ok{color:var(--green)}.sim .pred .fb.bad{color:var(--crimson)}
+b.T{color:var(--green)} b.F{color:var(--crimson)}
+table.vars{width:100%;border-collapse:collapse;font-size:.9rem;font-family:var(--mono)}
+table.vars th{text-align:left;font-family:"Segoe UI",Arial,sans-serif;font-size:.72rem;color:var(--muted);border-bottom:1px solid var(--line);padding:.15rem .4rem}
+table.vars td{border-bottom:1px solid #eef1f5;padding:.15rem .4rem}
+table.vars td:first-child{color:#0033b3}
+table.vars tr.chg td{animation:flash 1.2s}
+@keyframes flash{0%,40%{background:var(--gold)}100%{background:transparent}}
+
+/* flowchart */
+svg.flow{width:100%;height:auto;max-height:34rem;display:block}
+svg.flow .node .shape{fill:#fff;stroke:var(--navy);stroke-width:2;transition:fill .25s,stroke .25s}
+svg.flow .node.dec .shape{fill:#fffdf3}
+svg.flow .node text{font-family:var(--mono);font-size:12.5px;fill:var(--ink);text-anchor:middle;dominant-baseline:central}
+svg.flow .node.term text{font-family:"Segoe UI",Arial,sans-serif;font-weight:700;font-size:13.5px}
+svg.flow .node.seen .shape{fill:var(--blue-m)}
+svg.flow .node.on .shape{fill:var(--gold-l);stroke:#c47f00;stroke-width:3.5}
+svg.flow .edge{fill:none;stroke:#7d8da0;stroke-width:2;marker-end:url(#ah);transition:stroke .2s}
+svg.flow .edge.hot{stroke:#e09a00;stroke-width:4;marker-end:url(#ahHot)}
+svg.flow .elab{font-size:12.5px;font-weight:700;fill:var(--muted);paint-order:stroke;stroke:#fff;stroke-width:4px}
+svg.flow .elab.t{fill:var(--green)} svg.flow .elab.f{fill:var(--crimson)}
+svg.flow .tok{fill:var(--gold);stroke:var(--navy-d);stroke-width:2.5;filter:drop-shadow(0 0 5px rgba(253,181,21,.9))}
+
+/* case viz */
+.casebox{border:1px solid var(--line);border-radius:12px;padding:.6rem;background:var(--code-bg)}
+.cval{text-align:center;font-family:var(--mono);font-size:1.3rem;background:var(--navy-d);color:#fff;border-radius:10px;padding:.3rem;margin-bottom:.5rem}
+.cval b{color:var(--gold);font-size:1.6rem}
+.crow{display:flex;align-items:center;gap:.6rem;border:2px solid var(--line);border-radius:10px;background:#fff;padding:.35rem .6rem;margin:.3rem 0;transition:transform .25s,opacity .3s,background .3s,border-color .3s}
+.crow .clab{font-family:var(--mono);font-weight:800;background:var(--navy);color:#fff;border-radius:6px;min-width:2.2em;text-align:center;padding:0 .3em}
+.crow .cname{flex:1}
+.crow .cprice{font-family:var(--mono);font-size:.88rem;color:var(--muted)}
+.crow .cmark{width:1.4em;text-align:center;font-weight:800}
+.crow.chk{border-color:var(--gold);background:var(--gold-l);transform:translateX(10px)}
+.crow.no{opacity:.45}
+.crow.no .cmark::before{content:"✗";color:var(--crimson)}
+.crow.yes{border-color:var(--green);background:var(--green-l);transform:scale(1.03)}
+.crow.yes .cmark::before{content:"✓";color:var(--green)}
+.crow.skip{opacity:.3}
+
+/* condition tester */
+.cond{font-family:var(--mono);font-size:1.6rem;text-align:center;margin:.5rem 0}
+.cond .v{color:var(--navy);font-weight:700}
+.pillTF{display:inline-block;font-weight:800;border-radius:999px;padding:.05rem .9rem;margin-left:.6rem;transition:background .2s,color .2s;font-family:"Segoe UI",Arial,sans-serif}
+.pillTF.T{background:var(--green);color:#fff}.pillTF.F{background:var(--crimson);color:#fff}
+.ops{display:flex;gap:.3rem;flex-wrap:wrap;justify-content:center}
+.ops button{font-family:var(--mono);font-size:1.05rem;min-width:3rem;border:1px solid #9fb0c2;background:#fff;border-radius:8px;padding:.15rem .5rem}
+.ops button.sel{background:var(--navy);color:#fff;border-color:var(--navy)}
+.nline{position:relative;height:3.4rem;margin:1rem 1rem .4rem}
+.nline .track{position:absolute;left:0;right:0;top:1.1rem;height:.7rem;background:#e3e8ee;border-radius:999px;overflow:hidden}
+.nline .zone{position:absolute;top:0;bottom:0;background:var(--green);opacity:0;transition:opacity .25s}
+.nline .zone.on{opacity:.75}
+.nline .zl{left:0;width:50%}.nline .zr{left:50%;width:50%}
+.nline .pt{position:absolute;left:50%;top:.75rem;width:1.4rem;height:1.4rem;margin-left:-.7rem;border-radius:50%;border:3px solid var(--navy-d);background:#fff;transition:background .25s}
+.nline .pt.on{background:var(--green)}
+.nline .mk{position:absolute;top:-.35rem;margin-left:-.75rem;font-size:1.5rem;transition:left .15s linear}
+.nline .tick{position:absolute;top:2.3rem;font-size:.78rem;color:var(--muted);transform:translateX(-50%);font-family:var(--mono)}
+
+/* sort game */
+.sortcard{border:1px solid var(--line);border-radius:10px;padding:.55rem .7rem;background:#fff}
+.sortcard pre{margin:.2rem 0 .4rem;font-family:var(--mono);font-size:.95rem;background:var(--code-bg);border-radius:6px;padding:.3rem .5rem;white-space:pre-wrap}
+.sortcard .why{font-size:.85rem;margin-top:.3rem}
+.sortcard.ok{border-color:var(--green);background:var(--green-l)}
+.sortcard.bad{border-color:var(--crimson);background:var(--red-l)}
+.sortcard button{font-size:.8rem;border:1px solid #9fb0c2;background:#fff;border-radius:6px;padding:.1rem .45rem;margin-right:.2rem}
+.sortcard button.sel{background:var(--navy);color:#fff;border-color:var(--navy);font-weight:700}
+
+/* parsons */
+.pline{display:flex;align-items:center;gap:.3rem;border:1px solid var(--line);border-radius:8px;padding:.15rem .35rem;margin:.2rem 0;background:#fff;transition:background .3s}
+.pline pre{flex:1;margin:0;font-family:var(--mono);font-size:.9rem;white-space:pre}
+.pline button{border:1px solid #b9c4d0;background:#f4f7fa;border-radius:6px;padding:0 .45rem;font-size:.85rem}
+.pline.ok{border-color:var(--green);background:var(--green-l)}
+.pline.bad{border-color:var(--crimson);background:var(--red-l)}
+
+/* logic lab */
+.switches{display:flex;gap:1rem;flex-wrap:wrap;margin:.5rem 0}
+.sw{display:flex;align-items:center;gap:.5rem;border:1px solid var(--line);border-radius:10px;padding:.35rem .6rem;background:#fff}
+.sw button{position:relative;width:3.2rem;height:1.6rem;border-radius:999px;border:0;background:#b9c4d0;transition:background .2s}
+.sw button::after{content:"";position:absolute;top:.15rem;left:.15rem;width:1.3rem;height:1.3rem;border-radius:50%;background:#fff;transition:left .2s}
+.sw button[aria-pressed=true]{background:var(--green)}
+.sw button[aria-pressed=true]::after{left:1.75rem}
+.sw .val{font-family:var(--mono);font-weight:700;min-width:3.4em}
+.lamp{text-align:center;border-radius:14px;padding:.7rem;border:3px solid #b9c4d0;background:#eef1f5;color:#8a96a5;transition:all .3s;margin:.5rem 0}
+.lamp b{display:block;font-size:1.3rem}
+.lamp.on{border-color:var(--gold);background:var(--gold-l);color:var(--navy-d);box-shadow:0 0 0 6px rgba(253,181,21,.25),0 0 28px rgba(253,181,21,.7)}
+table.tt{border-collapse:collapse;margin:.4rem 0;width:100%}
+table.tt th,table.tt td{border:1px solid #b9c4d0;padding:.2rem .5rem;text-align:center;font-family:var(--mono);font-size:.9rem}
+table.tt th{background:var(--navy);color:#fff;font-weight:600}
+table.tt tr.now td{background:var(--hl);font-weight:700}
+table.tt td.T{color:var(--green)} table.tt td.F{color:var(--crimson)}
+
+/* quiz */
+.q{border:1px solid var(--line);border-radius:10px;padding:.6rem .8rem;margin:.5rem 0;background:#fff}
+.q pre{font-family:var(--mono);font-size:.85rem;background:var(--code-bg);border:1px solid var(--line);border-radius:8px;padding:.4rem .6rem;white-space:pre-wrap;margin:.3rem 0}
+.q .opts button{display:block;width:100%;text-align:left;border:1px solid #c5d0dc;background:#f9fbfd;border-radius:8px;padding:.35rem .6rem;margin:.25rem 0;font-size:.95rem}
+.q .opts button.ok{background:var(--green-l);border-color:var(--green)}
+.q .opts button.bad{background:var(--red-l);border-color:var(--crimson)}
+.q .opts button.sel{background:var(--navy);color:#fff;border-color:var(--navy);font-weight:600}
+.q .opts button:disabled{cursor:default}
+.q .opts button.sel.ok{background:var(--green);border-color:var(--green)}
+.q .opts button.sel.bad{background:var(--crimson);border-color:var(--crimson)}
+.q .opts button.sel code,.q .opts button.sel.ok code{background:rgba(255,255,255,.2)}
+.pq .why{font-size:.88rem;background:var(--green-l);border-radius:8px;padding:.3rem .55rem;margin-top:.3rem}
+.pq .why.badw{background:var(--red-l)}
+.scorebig{text-align:center;border:3px solid var(--gold);border-radius:14px;background:linear-gradient(135deg,#fff,var(--gold-l));padding:.6rem;margin-top:.6rem}
+.scorebig b{display:block;font-size:2.6rem;color:var(--navy);line-height:1.1}
+.badge{text-align:center;border:3px solid var(--gold);border-radius:16px;padding:1rem;background:linear-gradient(135deg,#fff,var(--gold-l));margin-bottom:1rem;animation:pop .6s}
+.badge .big{font-size:3rem}
+@keyframes pop{30%{transform:scale(1.06)}}
+.bug{border:1px solid var(--line);border-radius:10px;padding:.6rem .8rem;margin:.5rem 0;background:#fff}
+.bug .fbk{font-size:.9rem;border-radius:8px;padding:.3rem .55rem;margin-top:.3rem}
+.bug .fbk.ok{background:var(--green-l)}.bug .fbk.bad{background:var(--red-l)}
+
+/* ---------- step bar ---------- */
+[data-step]{scroll-margin-top:6rem;transition:opacity .35s,filter .35s,box-shadow .25s}
+body.focus section.block.active [data-step]:not(.spot){opacity:.3;filter:grayscale(.7)}
+body.focus section.block.active [data-step]:not(.spot):hover{opacity:.85;filter:none}
+.spot{box-shadow:0 0 0 3px var(--gold)}
+#stepbar{position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--navy-d);color:#fff;box-shadow:0 -6px 24px rgba(0,0,0,.25)}
+.sb-row{display:flex;align-items:center;gap:.6rem;padding:.4rem .7rem}
+.sb-row>button{background:var(--gold);color:var(--navy-d);border:0;border-radius:10px;font-size:1.3rem;font-weight:800;width:3rem;height:2.6rem;flex:0 0 auto}
+.sb-row>button:disabled{opacity:.3;cursor:not-allowed}
+.sb-row>button.sb-tool{width:auto;font-size:.85rem;padding:0 .7rem;background:#2c3e5a;color:#fff;border:1px solid #4a6286}
+.sb-row>button.sb-tool.on{background:#fff;color:var(--navy-d)}
+#guide{max-height:0;overflow:hidden;transition:max-height .35s ease;background:#14202f;border-bottom:1px solid #3d5373}
+body.guide-open #guide{max-height:52vh;overflow:auto}
+.g-head{padding:.6rem 1rem 0;font-size:1.05rem}
+.g-head b{color:var(--gold)}
+.g-cols{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:.7rem;padding:.6rem 1rem .9rem}
+@media (max-width:900px){.g-cols{grid-template-columns:1fr}.sb-chips{display:none}}
+.g-col{border-radius:12px;padding:.55rem .8rem;color:var(--ink)}
+.g-col h4{margin:0 0 .3rem;font-size:.95rem;text-transform:uppercase;letter-spacing:.04em}
+.g-col ul,.g-col ol{margin:0;padding-left:1.2rem}
+.g-col li{margin:.25rem 0;font-size:.95rem}
+.g-col.say{background:#EEF5FA;border-left:6px solid var(--navy)} .g-col.say h4{color:var(--navy)}
+.g-col.do{background:var(--green-l);border-left:6px solid var(--green)} .g-col.do h4{color:var(--green)}
+.g-col.extra{background:var(--gold-l);border-left:6px solid var(--gold)} .g-col.extra h4{color:#7a5600}
+.sb-mid{flex:1;min-width:0}
+.sb-title{font-size:.95rem}
+.sb-title b{color:var(--gold)}
+.sb-chips{display:flex;gap:.3rem;flex-wrap:wrap;margin-top:.2rem}
+.sb-chips button{background:transparent;color:#cfe0f5;border:1px solid #3d5373;border-radius:999px;padding:.05rem .55rem;font-size:.78rem}
+.sb-chips button.done{color:#7ee08f;border-color:#2f6a45}
+.sb-chips button.done::before{content:"✓ "}
+.sb-chips button.on{background:#fff;color:var(--navy-d);border-color:#fff;font-weight:700}
+#admin{position:fixed;right:1rem;bottom:5rem;z-index:70;background:#fff;border:2px solid var(--crimson);border-radius:12px;padding:.7rem;display:flex;flex-direction:column;gap:.3rem;box-shadow:0 8px 30px rgba(0,0,0,.2)}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;transition-duration:.01s!important}}
+
+/* ---------- diagram player ---------- */
+.sim .side .log{margin:.2rem 0 0;padding-left:2.1rem;max-height:13rem;overflow:auto;font-size:.9rem}
+.sim .side .log li{margin:.2rem 0;color:var(--muted)}
+.sim .side .log li:last-child{color:var(--ink);background:var(--hl);border-radius:6px;padding:.1rem .3rem}
+svg.dia{width:100%;height:auto;max-height:26rem;display:block}
+svg.dia .node .shape{fill:#fff;stroke:var(--navy);stroke-width:2;transition:fill .25s,stroke .25s}
+svg.dia .node text{text-anchor:middle;dominant-baseline:central;fill:var(--ink)}
+svg.dia .node .tt{font-weight:700;font-size:15px}
+svg.dia .node .sub{font-size:12.5px;fill:var(--muted)}
+svg.dia .node.seen .shape{fill:var(--blue-m)}
+svg.dia .node.on .shape{fill:var(--gold-l);stroke:#c47f00;stroke-width:3.5}
+svg.dia .edge{fill:none;stroke:#7d8da0;stroke-width:2.5;marker-end:url(#ah);marker-start:url(#ah);transition:stroke .2s}
+svg.dia .edge.hot{stroke:#e09a00;stroke-width:4}
+svg.dia .tok{fill:var(--gold);stroke:var(--navy-d);stroke-width:2.5;filter:drop-shadow(0 0 5px rgba(253,181,21,.9))}
+.phases{display:flex;gap:.3rem;margin:.2rem 0 .4rem}
+.phases span{flex:1;text-align:center;border-radius:8px;padding:.2rem;background:#eef1f5;color:var(--muted);font-weight:700;font-size:.85rem;transition:all .25s}
+.phases span.on{background:var(--gold);color:var(--navy-d);transform:scale(1.06)}
+table.vars tr.hi td{background:var(--hl);font-weight:700}
+
+/* ---------- inside the PC ---------- */
+svg.pc{width:100%;height:auto;display:block;border-radius:14px}
+svg.pc text{font-family:"Segoe UI",Arial,sans-serif;font-size:12px;fill:#e9f0f8;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+svg.pc text.dk{fill:#1d2530;font-weight:700}
+svg.pc .part{display:none;cursor:pointer}
+svg.pc .part.in{display:block;animation:drop .35s}
+@keyframes drop{from{opacity:0;transform:translateY(-14px)}to{opacity:1}}
+svg.pc .part:hover,svg.pc .part.sel{filter:drop-shadow(0 0 7px #FDB515)}
+svg.pc .slot{cursor:pointer}
+svg.pc .slot.full{display:none}
+svg.pc .slot rect{fill:rgba(255,255,255,.07);stroke:#cfe0f5;stroke-width:1.5;stroke-dasharray:6 4}
+svg.pc .slot:hover rect{fill:rgba(253,181,21,.35)}
+svg.pc .slot.no rect{fill:rgba(195,9,43,.5);animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+svg.pc .blades{transform-box:fill-box;transform-origin:center}
+svg.pc.on .blades{animation:spin .5s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.tray{display:flex;gap:.3rem;flex-wrap:wrap;margin:.4rem 0}
+.tray button{border:1px solid #9fb0c2;background:#fff;border-radius:8px;padding:.25rem .6rem;font-size:.9rem}
+.tray button.sel{background:var(--navy);color:#fff;border-color:var(--navy);font-weight:700}
+.tray button:disabled{opacity:.45;cursor:default;text-decoration:line-through}
+.screen{background:#0b0f14;color:#8fe39a;font-family:var(--mono);border:6px solid #2b3440;border-radius:10px;min-height:6.5rem;padding:.6rem .8rem;white-space:pre-wrap;font-size:.92rem}
+.screen.err{color:#ff8a8a}
+.screen.off{color:#3a4350}
+.led{display:inline-block;width:.8rem;height:.8rem;border-radius:50%;background:#555;vertical-align:middle;margin-right:.3rem}
+.led.on{background:#3ddc55;box-shadow:0 0 8px #3ddc55}
+.info{border:1px solid var(--line);border-radius:12px;padding:.7rem .9rem;background:var(--code-bg);min-height:11rem}
+.info h3{margin:0 0 .3rem;color:var(--navy);font-size:1.15rem}
+.info dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:.2rem .7rem;font-size:.95rem}
+.info dt{font-weight:700;color:var(--muted)}
+.info dd{margin:0}
+ul.mission{list-style:none;padding:0;margin:.3rem 0;display:flex;flex-wrap:wrap;gap:.25rem}
+ul.mission button{border:1px solid var(--line);border-radius:999px;padding:.05rem .6rem;font-size:.82rem;background:#eef1f5;color:var(--muted)}
+ul.mission button:hover{border-color:var(--navy)}
+ul.mission button.ok{background:var(--green-l);color:var(--green);font-weight:700}
+ul.mission button.ok::before{content:"✔ "}
+
+/* ---------- RAM vs storage ---------- */
+.mem{border:2px solid var(--line);border-radius:12px;padding:.6rem .8rem;background:#fff;min-height:7.5rem;transition:background .4s,opacity .4s}
+.mem h3{margin:0 0 .3rem}
+.mem.ram{border-color:#2f7fd1}.mem.ssd{border-color:var(--green)}
+.mem.dead{background:#e3e6ea}
+.fchip{display:inline-block;font-family:var(--mono);font-size:.88rem;border-radius:8px;padding:.15rem .5rem;margin:.15rem .2rem 0 0;border:1px solid var(--line);background:var(--blue-l);animation:drop .35s}
+.fchip.warn{border-color:#d97a00;background:#fff4e5;color:#a35c00}
+.fchip.safe{border-color:var(--green);background:var(--green-l);color:var(--green)}
+.units{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin:.5rem 0}
+.units div{text-align:center;background:var(--blue-l);border-radius:10px;padding:.5rem}
+.units b{display:block;font-size:1.7rem;color:var(--navy);font-family:var(--mono)}
+.sortcard .lab{font-weight:700;font-size:1.02rem;margin-bottom:.3rem}
+.sortcard button{margin-top:.2rem}
+
+svg.pc.build .part{pointer-events:none}
+svg.pc:not(.build) .part[data-p=fan]{opacity:.8}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" fill="#7d8da0"/></marker>
+</defs></svg>
+
+<div id="top">
+  <div class="brand">Level 3 <span>·</span> Computer Hardware &amp; Software</div>
+  <nav id="nav"></nav>
+  <div class="tb">
+    <button id="fontDn" title="Smaller text">A−</button>
+    <button id="fontUp" title="Bigger text">A+</button>
+  </div>
+</div>
+<div id="progress"><i></i></div>
+
+<main>
+
+<!-- ================================================= PART 1 -->
+<section class="block" data-title="The big picture">
+  <div class="bhead"><span class="chip">Part 1 of 5</span> <span class="chip gold">Scenario</span>
+  <h1>🖥️ Hardware, software and how they work together</h1></div>
+  <p class="kicker">You are the new <b>junior technician</b> in the campus computer lab. A PC has arrived in a box. Before you can build it, fix it or install anything on it, you need to know what every part does.</p>
+
+  <div class="card" data-step="Hardware or software?">
+    <h2>Two halves of every computer</h2>
+    <div class="grid2">
+      <div>
+        <div class="loop4">
+          <div><b>🔩 Hardware</b>The <b>physical parts</b>. You can touch them, drop them and break them.</div>
+          <div><b>💿 Software</b>The <b>programs</b>: sets of instructions that tell the hardware what to do. You cannot touch them.</div>
+        </div>
+        <div class="analogy"><b class="t">Think of it like this</b>
+        A taxi is <b>hardware</b>. The route in the driver's head is <b>software</b>. A taxi with no route goes nowhere, and a route with no taxi carries nobody. A computer needs <b>both</b>.</div>
+        <div class="key"><b>Quick test:</b> if you can pick it up, it is hardware. If you can only <i>install</i>, <i>open</i> or <i>delete</i> it, it is software.</div>
+      </div>
+      <div>
+        <p><b>Sort these.</b> Hardware or software?</p>
+        <div class="grid2" id="sortHS" style="gap:.5rem"></div>
+        <p class="small" id="sortHSscore"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-step="Input → Process → Output">
+    <h2>What every computer does: input, process, output, storage</h2>
+    <p>Whatever you do on a computer, the data follows the same route. Choose a task and watch the data travel.</p>
+    <div id="ipo"></div>
+    <div class="loop4">
+      <div><b>⌨️ Input</b>Gets data <b>into</b> the computer</div>
+      <div><b>⚙️ Processing</b>The CPU <b>works</b> on the data</div>
+      <div><b>🖥️ Output</b>Shows or delivers the <b>result</b></div>
+      <div><b>💾 Storage</b><b>Keeps</b> data for later</div>
+    </div>
+  </div>
+
+  <div class="card challenge" data-step="Sort the devices">
+    <h2>Which job does each device do?</h2>
+    <div class="grid3" id="sortDev"></div>
+    <p class="small" id="sortDevScore"></p>
+  </div>
+</section>
+
+<!-- ================================================= PART 2 -->
+<section class="block" data-title="Inside the box">
+  <div class="bhead"><span class="chip">Part 2 of 5</span>
+  <h1>🔧 Inside the system unit</h1></div>
+  <p class="kicker">Open the side panel of the PC. Everything you see has one job. First explore the parts, then build the PC yourself and switch it on.</p>
+
+  <div class="card" data-step="Explore the parts">
+    <h2>Click a part to see what it does</h2>
+    <div class="grid2">
+      <div><div id="pcExplore"></div>
+        <ul class="mission" id="exMission"></ul></div>
+      <div>
+        <div class="info" id="pcInfo"><h3>👈 Click any part inside the case</h3><p>There are <b>eight</b> things to find. Each one is ticked off below the picture when you have looked at it. The <b>CPU</b> sits underneath its cooler, so use its button below the picture.</p></div>
+        <div class="analogy"><b class="t">Remember them as a kitchen</b>
+        The <b>CPU</b> is the chef. <b>RAM</b> is the counter where the chef works. <b>Storage</b> is the pantry. A bigger counter lets the chef work on more dishes at once; a bigger pantry just holds more ingredients.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card task" data-step="Build it and power on">
+    <h2>Build the PC</h2>
+    <div class="grid2">
+      <div>
+        <p><b>1.</b> Pick a part from the tray. <b>2.</b> Click the place in the case where it fits. <b>3.</b> Press the power button whenever you like, even with parts missing, and see what happens.</p>
+        <div class="tray" id="tray"></div>
+        <div id="pcBuild"></div>
+      </div>
+      <div>
+        <p><button class="btn green" id="pwr">⏻ Power button</button> <button class="btn alt" id="rebuild">↺ Take it apart</button> <span class="led" id="led"></span><span class="small">power light</span></p>
+        <div class="panel-t">Monitor</div>
+        <div class="screen off" id="screen">(no signal)</div>
+        <p class="status" id="buildMsg" style="background:var(--blue-l);border-radius:8px;padding:.4rem .7rem;min-height:2.6em">Pick a part from the tray to start.</p>
+        <div class="reveal-box hidden" id="buildDone">✔ <b>It boots!</b> Now press <b>Take it apart</b>, leave <b>one</b> part out on purpose and power on. Every missing part gives a different symptom. That is how technicians diagnose faults.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================= PART 3 -->
+<section class="block" data-title="How it runs">
+  <div class="bhead"><span class="chip">Part 3 of 5</span>
+  <h1>⚙️ How the hardware runs a program</h1></div>
+  <p class="kicker">A CPU does only one thing, billions of times per second: <b>fetch</b> an instruction, <b>decode</b> it, <b>execute</b> it. Watch one tiny program run in slow motion.</p>
+
+  <div class="card" data-step="Fetch, decode, execute">
+    <h2>The machine cycle</h2>
+    <p>This program adds 5 + 3, stores the answer and shows it. Press <b>Step</b> and follow the gold dot between RAM and the CPU.</p>
+    <div id="cycle"></div>
+    <div class="key">A <b>3 GHz</b> processor repeats this cycle about <b>3 billion times every second</b>. More <b>cores</b> means several cycles can run at the same time.</div>
+  </div>
+
+  <div class="card task" data-step="RAM vs storage">
+    <h2>Why you lose unsaved work: RAM vs storage</h2>
+    <div class="grid2">
+      <div>
+        <p>You are typing an essay. Use the buttons and watch <b>where</b> your words are kept.</p>
+        <p><button class="btn" id="mType">✏️ Type 50 words</button> <button class="btn green" id="mSave">💾 Save</button> <button class="btn red" id="mCut">🔌 Power cut!</button> <button class="btn alt" id="mOpen">⏻ Switch on &amp; open file</button></p>
+        <p class="status" id="mMsg" style="background:var(--blue-l);border-radius:8px;padding:.4rem .7rem;min-height:2.6em"></p>
+        <table class="keys">
+          <tr><th></th><th>RAM (memory)</th><th>Storage (SSD / HDD)</th></tr>
+          <tr><td>Holds</td><td>What is open <b>right now</b></td><td>Everything you have <b>saved</b></td></tr>
+          <tr><td>Power off</td><td><b>Forgets</b> everything (volatile)</td><td><b>Keeps</b> everything (non-volatile)</td></tr>
+          <tr><td>Speed</td><td>Very fast</td><td>Slower</td></tr>
+          <tr><td>Typical size</td><td>8 to 16 GB</td><td>256 GB to 1 TB</td></tr>
+        </table>
+      </div>
+      <div>
+        <div class="mem ram" id="mRam"><h3>🧠 RAM <span class="small">the desk</span></h3><div id="mRamIn"></div></div>
+        <p style="text-align:center;margin:.3rem 0" class="small">💾 Save copies from RAM down to storage · Open copies from storage up to RAM</p>
+        <div class="mem ssd"><h3>🗄️ SSD <span class="small">the filing cabinet</span></h3><div id="mSsdIn"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-step="Bits, bytes and gigabytes">
+    <h2>Measuring memory and storage</h2>
+    <div class="grid2">
+      <div>
+        <table class="keys">
+          <tr><th>Unit</th><th>Size</th><th>Roughly holds</th></tr>
+          <tr><td><b>bit</b></td><td>a single 0 or 1</td><td>one yes/no answer</td></tr>
+          <tr><td><b>byte</b> (B)</td><td>8 bits</td><td>one letter</td></tr>
+          <tr><td><b>kilobyte</b> (KB)</td><td>1 024 bytes</td><td>half a page of text</td></tr>
+          <tr><td><b>megabyte</b> (MB)</td><td>1 024 KB</td><td>one minute of music</td></tr>
+          <tr><td><b>gigabyte</b> (GB)</td><td>1 024 MB</td><td>half a movie</td></tr>
+          <tr><td><b>terabyte</b> (TB)</td><td>1 024 GB</td><td>about 500 movies</td></tr>
+        </table>
+        <p class="small">Each unit is 1 024 times the one before it. For quick sums, "about 1 000" is close enough.</p>
+      </div>
+      <div>
+        <p><b>What fits?</b> Choose a device:</p>
+        <div class="ops" id="uOps" style="justify-content:flex-start"></div>
+        <div class="units">
+          <div>📷 photos<b id="uP">0</b><span class="small">4 MB each</span></div>
+          <div>🎵 songs<b id="uS">0</b><span class="small">5 MB each</span></div>
+          <div>🎬 movies<b id="uM">0</b><span class="small">2 GB each</span></div>
+        </div>
+        <p class="small" id="uSay"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card challenge" data-step="Quick check">
+    <h2>Quick check</h2>
+    <div class="pq grid2" id="pq3"></div>
+  </div>
+</section>
+
+<!-- ================================================= PART 4 -->
+<section class="block" data-title="Software">
+  <div class="bhead"><span class="chip">Part 4 of 5</span>
+  <h1>💿 Software: the instructions</h1></div>
+  <p class="kicker">Hardware on its own does nothing. Software comes in two big families: <b>system software</b> that runs the computer, and <b>application software</b> that does a job for you.</p>
+
+  <div class="card" data-step="Types of software">
+    <h2>System software and application software</h2>
+    <div class="grid2">
+      <div>
+        <table class="keys">
+          <tr><th>Family</th><th>Type</th><th>Job</th></tr>
+          <tr><td rowspan="3"><b>System software</b><br><span class="small">runs the computer</span></td><td>Operating system</td><td>Controls the hardware and runs all other programs</td></tr>
+          <tr><td>Utility</td><td>Looks after the computer: protects, cleans, backs up</td></tr>
+          <tr><td>Device driver</td><td>Translates between the OS and one piece of hardware</td></tr>
+          <tr><td><b>Application software</b><br><span class="small">works for the user</span></td><td>Apps</td><td>Does a task you want: write, browse, calculate, chat, play</td></tr>
+        </table>
+        <div class="key"><b>The operating system's jobs:</b> start the computer · share out RAM and CPU time · manage files and folders · control devices through drivers · give you a screen to work with · keep users and data secure.</div>
+        <table class="keys">
+          <tr><th>Licence</th><th>Means</th><th>Example</th></tr>
+          <tr><td>Proprietary</td><td>You pay; the code is secret</td><td>Windows, MS Office</td></tr>
+          <tr><td>Open source</td><td>Free; anyone may read and change the code</td><td>Linux, LibreOffice</td></tr>
+          <tr><td>Freeware</td><td>Free to use; the code is secret</td><td>Chrome, WhatsApp</td></tr>
+          <tr><td>Shareware</td><td>Free trial, then you pay</td><td>WinRAR</td></tr>
+        </table>
+      </div>
+      <div>
+        <p><b>Sort these.</b> What type of software is each one?</p>
+        <div class="grid2" id="sortSW" style="gap:.5rem"></div>
+        <p class="small" id="sortSWscore"></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-step="From click to hardware">
+    <h2>How an app reaches the hardware</h2>
+    <p>An app never talks to hardware directly. Every request goes <b>down through the operating system</b>, and the answer comes back up the same way. Choose a task:</p>
+    <div id="layers"></div>
+  </div>
+
+  <div class="card task" data-step="Boot sequence">
+    <h2>What happens when you press the power button?</h2>
+    <div class="grid2">
+      <div>
+        <p>Starting a computer is called <b>booting</b>. Use ▲ ▼ to put the six steps in the right order.</p>
+        <p><button class="btn green" id="bootCheck">Check my order</button> <button class="btn alt" id="bootMix">↺ Shuffle</button></p>
+        <p class="small" id="bootMsg"></p>
+        <div class="reveal-box hidden" id="bootDone">✔ <b>Correct!</b> Notice how hardware and software take turns: power (hardware) → firmware (software stored on a chip) → hardware test → operating system loaded from storage into RAM.</div>
+        <div class="key"><b>Firmware</b> (BIOS or UEFI) is software stored permanently on a chip on the motherboard. It is the first program that runs, before the operating system.</div>
+      </div>
+      <div id="boot"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================= PART 5 -->
+<section class="block" data-title="Faults &amp; quiz">
+  <div class="bhead"><span class="chip">Part 5 of 5</span>
+  <h1>🩺 Fault clinic &amp; exit quiz</h1></div>
+  <p class="kicker">A lecturer brings you a PC that "doesn't work". A good technician listens to the <b>symptom</b> and works out which part to check first.</p>
+
+  <div class="card challenge" data-step="Fault clinic">
+    <h2>Fault clinic: what do you check first?</h2>
+    <div class="pq grid2" id="pq5"></div>
+  </div>
+
+  <div class="grid2">
+    <div class="card challenge" data-step="Exit quiz: lock in || Show the answers">
+      <h2>Exit quiz</h2>
+      <p>Pick one answer per question. You can change your mind until you press <b>🔒 Lock in</b>.<br>
+      <span class="small">⚠ One attempt only. Once locked, your answers are saved in this browser.</span></p>
+      <div id="quiz"></div>
+      <div id="quizBar" style="margin-top:.6rem"><button class="btn red" id="quizLock" disabled>🔒 Lock in my answers</button> <span class="small" id="quizLeft"></span></div>
+      <div id="quizResult" class="hidden"></div>
+    </div>
+    <div>
+      <div class="badge hidden" id="badge"><div class="big">🖥️🏅</div><h2 style="margin:.2rem 0">Certified Lab Technician</h2><p id="badgeTxt"></p></div>
+      <div class="card" data-step="Cheat sheet">
+        <h2>Cheat sheet</h2>
+        <table class="keys">
+          <tr><th>Part</th><th>Job</th><th>If it fails</th></tr>
+          <tr><td><b>PSU</b></td><td>Supplies power to every part</td><td>Completely dead</td></tr>
+          <tr><td><b>Motherboard</b></td><td>Connects everything</td><td>Parts cannot communicate</td></tr>
+          <tr><td><b>CPU</b></td><td>Fetch, decode, execute</td><td>Power light only, nothing runs</td></tr>
+          <tr><td><b>Cooler</b></td><td>Removes heat from the CPU</td><td>Overheats and shuts down</td></tr>
+          <tr><td><b>RAM</b></td><td>Holds what is open now (volatile)</td><td>Beeps, no picture</td></tr>
+          <tr><td><b>Storage</b></td><td>Keeps saved files (non-volatile)</td><td>"No boot device found"</td></tr>
+          <tr><td><b>GPU</b></td><td>Creates the picture</td><td>No or poor display</td></tr>
+        </table>
+        <div class="key"><b>Software in one line:</b> the <b>operating system</b> runs the computer, <b>drivers</b> let it talk to devices, <b>utilities</b> look after it, and <b>applications</b> do your work.</div>
+        <p class="small"><button class="btn alt" id="resetAll">↺ Start over</button> clears your ticks and practice answers on this device (not the locked exit quiz).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="stepbar">
+  <div id="guide">
+    <div class="g-head" id="gHead"></div>
+    <div class="g-cols">
+      <div class="g-col say"><h4>🎤 Explain</h4><ul id="gSay"></ul></div>
+      <div class="g-col do"><h4>✅ Do this now</h4><ol id="gDo"></ol></div>
+      <div class="g-col extra"><h4>📚 Extra</h4><ul id="gExtra"></ul></div>
+    </div>
+  </div>
+  <div class="sb-row">
+    <button id="prevB" title="Previous step (←)">◀</button>
+    <div class="sb-mid"><div class="sb-title" id="sbTitle"></div><div class="sb-chips" id="sbChips"></div></div>
+    <button class="sb-tool" id="focusBtn" title="Fade everything except the current step">🔦 Focus</button>
+    <button class="sb-tool" id="guideBtn" title="Show the step guide">▲ Guide</button>
+    <button id="nextB" title="Next step (→)">▶</button>
+  </div>
+</div>
+<div id="admin" class="hidden">
+  <b>Lecturer reset (this device only)</b>
+  <button class="btn alt" id="quizReset">Reset exit quiz</button>
+  <button class="btn alt" id="adminClose">Close</button>
+</div>
+</main>
+
+<script>
+/* Step guide: one array per part, one object per step chip. */
+const GUIDE=[
+[
+ {say:["One scenario all lesson: you are the <b>junior technician</b> in the campus lab.","Hardware = physical parts you can touch. Software = instructions you can only install, open or delete.","Neither is useful without the other."],
+  do:["Read the taxi example.","Sort the six cards."],
+  extra:["Ask: is a CD hardware or software? (The disc is hardware; the program stored on it is software.)"]},
+ {say:["Every task follows the same route: <b>input → process → output</b>, with <b>storage</b> when data must be kept or fetched."],
+  do:["Run all four tasks with <b>Step</b>.","Before each one, predict: will storage be used?"],
+  extra:["Typing a letter never touches storage until you save. That idea returns in Part 3."]},
+ {say:["Classify a device by the <b>direction</b> the data moves: into the computer, out of it, or kept."],
+  do:["Sort all eight devices."],
+  extra:["A touchscreen is both input and output. Ask the class for other examples (headset with mic, multifunction printer)."]},
+],
+[
+ {say:["Each part has one job. Learn the job and the fault symptom together.","Kitchen picture: CPU = chef, RAM = counter, storage = pantry."],
+  do:["Click all eight parts and read each card.","Find the small silver battery."],
+  extra:["The CMOS battery keeps the clock and firmware settings. Wrong date at every start-up = flat battery."]},
+ {say:["Parts only fit where they belong: shape and label of the slot.","The cooler goes on <b>after</b> the CPU."],
+  do:["Build the full PC and power on.","Then take it apart, leave out one part, and power on again. Repeat for each part."],
+  extra:["Expected symptoms: no PSU = dead · no CPU = light only · no cooler = overheats · no RAM = beeps · no drive = no boot device · no GPU = still works on built-in graphics."]},
+],
+[
+ {say:["Fetch (get the instruction from RAM), decode (work out what it means), execute (do it).","The program counter keeps track of which instruction is next."],
+  do:["Step through the whole program.","Watch PC, IR and ACC change in the table."],
+  extra:["ALU = arithmetic logic unit (does the sums and comparisons). Control unit = directs the cycle."]},
+ {say:["RAM is fast but <b>volatile</b>. Storage is slower but <b>non-volatile</b>.","Saving copies your work from RAM to storage."],
+  do:["Type, type again, then cut the power. What is lost?","Now type, <b>save</b>, type, cut the power. What is lost this time?"],
+  extra:["This is why autosave exists, and why a UPS matters during load-shedding."]},
+ {say:["8 bits = 1 byte. Each unit is 1 024 times the previous one."],
+  do:["Compare the 4 GB flash drive with the 1 TB hard drive."],
+  extra:["Drive makers count in 1 000s, operating systems in 1 024s. That is why a '256 GB' drive shows about 238 GB."]},
+ {say:["Check understanding before moving on."],
+  do:["Answer all four questions."],
+  extra:["Question 2 links back to the kitchen: a bigger counter, not a bigger pantry."]},
+],
+[
+ {say:["System software runs the computer. Application software works for the user.","OS, utilities and drivers are all system software."],
+  do:["Read the tables.","Sort the nine cards."],
+  extra:["Ask which operating system is on their phones. Android and iOS are operating systems too."]},
+ {say:["Layers: user → application → operating system → hardware.","The <b>driver</b> is the translator between the OS and one device."],
+  do:["Run all three tasks.","Find the step where the driver is used."],
+  extra:["That is why a new printer does nothing until its driver is installed."]},
+ {say:["Booting: power → firmware → POST → find the boot drive → load the OS into RAM → login."],
+  do:["Put the six steps in order and check."],
+  extra:["POST = power-on self-test. The beeps from Part 2 come from this step."]},
+],
+[
+ {say:["Symptom first, then the most likely part. Check the cheap and simple thing first."],
+  do:["Choose what to check first for each fault."],
+  extra:["Fault 5 is a <b>software</b> fault. Not every problem needs a screwdriver."]},
+ {say:["Eight questions, one attempt, no conferring."],
+  do:["Answer all eight, then lock in."],
+  extra:["Answers: RAM module · CPU · RAM · Scanner · Fetch, decode, execute · Windows 11 · 1 024 MB · The storage drive."]},
+ {say:["Go through the most-missed question together."],
+  do:["Press <b>Show me the answers</b> when your lecturer says so."],
+  extra:["Lecturer: Ctrl+Alt+Shift+R opens a reset panel for the exit quiz on this device."]},
+ {say:["Part, job, symptom: the technician's table."],
+  do:["Copy the cheat sheet into your notes."],
+  extra:["Homework idea: find the CPU, RAM and storage size of your own phone or PC."]},
+],
+];
+
+(function(){
+"use strict";
+const PFX="l3-hwsw-";
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const store={get(k,d){try{const v=localStorage.getItem(PFX+k);return v===null?d:JSON.parse(v)}catch(e){return d}},
+             set(k,v){try{localStorage.setItem(PFX+k,JSON.stringify(v))}catch(e){}}};
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const REDUCED=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const TF=b=>'<b class="'+(b?"T":"F")+'">'+(b?"TRUE":"FALSE")+"</b>";
+
+/* ---------- navigation: parts + steps ---------- */
+const blocks=$$("section.block");let cur=Math.min(store.get("block",0),blocks.length-1);
+const done=new Set(store.get("done",[]));
+const stepPos=store.get("steps",{});
+const STEPS=blocks.map(b=>{const out=[];$$("[data-step]",b).forEach(el=>el.dataset.step.split("||").forEach(lab=>out.push({el,lab:lab.trim()})));return out});
+function buildNav(){
+  const nav=$("#nav");nav.innerHTML="";
+  blocks.forEach((b,i)=>{const bt=document.createElement("button");
+    bt.textContent=(i+1)+" "+b.dataset.title;bt.onclick=()=>show(i,0);
+    if(i===cur)bt.classList.add("on");if(done.has(i))bt.classList.add("done");nav.appendChild(bt)});
+}
+function paintSteps(scroll){
+  const st=STEPS[cur],k=stepPos[cur]||0;
+  $$(".spot").forEach(e=>e.classList.remove("spot"));
+  $("#sbTitle").innerHTML="Part "+(cur+1)+" of "+blocks.length+" · <b>"+esc(blocks[cur].dataset.title)+"</b> · Step "+(k+1)+" of "+st.length+": "+esc(st[k].lab);
+  const chips=$("#sbChips");chips.innerHTML="";
+  st.forEach((x,i)=>{const c=document.createElement("button");c.textContent=(i+1)+". "+x.lab;
+    if(i<k)c.classList.add("done");if(i===k)c.classList.add("on");c.onclick=()=>setStep(i,true);chips.appendChild(c)});
+  st[k].el.classList.add("spot");
+  const g=(GUIDE[cur]||[])[k]||{say:[],do:[],extra:[]};
+  $("#gHead").innerHTML="Part "+(cur+1)+" · <b>"+esc(blocks[cur].dataset.title)+"</b> · Step "+(k+1)+" of "+st.length+": <b>"+esc(st[k].lab)+"</b>";
+  const fill=(id,arr)=>{$(id).innerHTML=(arr&&arr.length?arr:["<i>–</i>"]).map(x=>"<li>"+x+"</li>").join("")};
+  fill("#gSay",g.say);fill("#gDo",g.do);fill("#gExtra",g.extra);
+  if(scroll)st[k].el.scrollIntoView({behavior:REDUCED?"auto":"smooth",block:"start"});
+  $("#prevB").disabled=cur===0&&k===0;$("#nextB").disabled=cur===blocks.length-1&&k===st.length-1;
+  $("#progress i").style.width=((cur+(k+1)/st.length)/blocks.length*100)+"%";
+}
+function setStep(k,scroll){stepPos[cur]=Math.max(0,Math.min(STEPS[cur].length-1,k));store.set("steps",stepPos);paintSteps(scroll)}
+function show(i,k){cur=Math.max(0,Math.min(blocks.length-1,i));blocks.forEach((b,j)=>b.classList.toggle("active",j===cur));
+  store.set("block",cur);buildNav();window.scrollTo(0,0);
+  if(k!==undefined)stepPos[cur]=k<0?STEPS[cur].length-1:k;setStep(stepPos[cur]||0,k!==undefined&&k!==0)}
+function nextStep(){const k=stepPos[cur]||0;if(k<STEPS[cur].length-1)setStep(k+1,true);else if(cur<blocks.length-1)show(cur+1,0)}
+function prevStep(){const k=stepPos[cur]||0;if(k>0)setStep(k-1,true);else if(cur>0)show(cur-1,-1)}
+function markDone(i){if(done.has(i))return;done.add(i);store.set("done",[...done]);buildNav()}
+$("#prevB").onclick=prevStep;$("#nextB").onclick=nextStep;
+$("#adminClose").onclick=()=>$("#admin").classList.add("hidden");
+function setGuide(on){document.body.classList.toggle("guide-open",on);$("#guideBtn").classList.toggle("on",on);$("#guideBtn").textContent=on?"▼ Guide":"▲ Guide";store.set("guide",on)}
+function setFocus(on){document.body.classList.toggle("focus",on);$("#focusBtn").classList.toggle("on",on);store.set("focus",on)}
+$("#guideBtn").onclick=()=>setGuide(!document.body.classList.contains("guide-open"));
+$("#focusBtn").onclick=()=>setFocus(!document.body.classList.contains("focus"));
+setGuide(store.get("guide",false));setFocus(store.get("focus",false));
+let fs=store.get("fs",17);const setFs=v=>{fs=Math.max(13,Math.min(26,v));document.documentElement.style.fontSize=fs+"px";store.set("fs",fs)};setFs(fs);
+$("#fontUp").onclick=()=>setFs(fs+1);$("#fontDn").onclick=()=>setFs(fs-1);
+document.addEventListener("keydown",e=>{
+  const tag=(e.target.tagName||"").toLowerCase();
+  if(e.ctrlKey&&e.altKey&&e.shiftKey&&(e.key==="R"||e.key==="r")){e.preventDefault();$("#admin").classList.toggle("hidden");return}
+  if(tag==="input"||tag==="textarea"||tag==="select")return;
+  if(e.key==="ArrowRight"){e.preventDefault();nextStep()}
+  if(e.key==="ArrowLeft"){e.preventDefault();prevStep()}
+});
+
+/* ================= Hardware & software content ================= */
+const fmt=n=>String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g," ");
+
+/* ---------- diagram visual: boxes, two-way arrows, travelling token ---------- */
+function Dia(host,spec){
+  const N=spec.nodes;let gen=0;
+  const ends=(a,b)=>{const dx=b.x-a.x,dy=b.y-a.y;
+    if(Math.abs(dx)>=Math.abs(dy)){const s=Math.sign(dx);return [[a.x+s*(a.w/2+3),a.y],[b.x-s*(b.w/2+3),b.y]]}
+    const s=Math.sign(dy);return [[a.x,a.y+s*(a.h/2+3)],[b.x,b.y-s*(b.h/2+3)]]};
+  let h='<svg class="dia" viewBox="0 0 '+spec.w+" "+spec.h+'" role="img" aria-label="'+esc(spec.alt)+'">';
+  spec.edges.forEach(([a,b])=>{h+='<path class="edge" data-e="'+a+"|"+b+'" d="M'+ends(N[a],N[b]).map(p=>p.join(",")).join("L")+'"/>'});
+  Object.keys(N).forEach(id=>{const n=N[id];
+    h+='<g class="node" data-n="'+id+'"><rect class="shape" x="'+(n.x-n.w/2)+'" y="'+(n.y-n.h/2)+'" width="'+n.w+'" height="'+n.h+'" rx="12"/><text class="tt" x="'+n.x+'" y="'+(n.y-11)+'">'+n.title+'</text><text class="sub" x="'+n.x+'" y="'+(n.y+14)+'">'+esc(n.sub||"")+"</text></g>"});
+  h+='<circle class="tok" r="9" cx="-30" cy="-30"/></svg>';
+  host.innerHTML=h;
+  const tok=$(".tok",host),node=id=>$('[data-n="'+id+'"]',host);
+  const park=id=>{tok.setAttribute("cx",N[id].x+N[id].w/2-14);tok.setAttribute("cy",N[id].y-N[id].h/2+14)};
+  function arrive(id){$$(".node.on",host).forEach(n=>{n.classList.remove("on");n.classList.add("seen")});node(id).classList.add("on");park(id)}
+  return {
+    label(id,t){$(".sub",node(id)).textContent=t},
+    reset(){gen++;$$(".node",host).forEach(n=>n.classList.remove("on","seen"));$$(".edge",host).forEach(e=>e.classList.remove("hot"));tok.setAttribute("cx",-30);tok.setAttribute("cy",-30)},
+    go(step,prev){
+      const g=gen;
+      if(!prev||prev.n===step.n){arrive(step.n);return Promise.resolve()}
+      let p=$('[data-e="'+prev.n+"|"+step.n+'"]',host),rev=false;
+      if(!p){p=$('[data-e="'+step.n+"|"+prev.n+'"]',host);rev=true}
+      if(!p){arrive(step.n);return Promise.resolve()}
+      $$(".edge",host).forEach(e=>e.classList.remove("hot"));p.classList.add("hot");
+      let len=0;try{len=p.getTotalLength()}catch(e){}
+      const dur=REDUCED||!len?0:Math.max(520,len*5);
+      return new Promise(res=>{const t0=performance.now();
+        (function f(t){
+          if(g!==gen)return res();
+          const k=dur?Math.min(1,Math.max(0,(t-t0)/dur)):1,e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
+          if(len){const pt=p.getPointAtLength(len*(rev?1-e:e));tok.setAttribute("cx",pt.x);tok.setAttribute("cy",pt.y)}
+          if(k<1)requestAnimationFrame(f);else{arrive(step.n);res()}
+        })(t0)});
+    }};
+}
+
+/* ---------- generic step player ---------- */
+function Player(host,cfg){
+  let pick=cfg.picks?cfg.picks[0].k:null;
+  let h='<div class="sim"><div class="bar">';
+  if(cfg.picks)h+='<div class="grp"><label>Task:</label>'+cfg.picks.map(p=>'<button class="chipbtn" data-pick="'+p.k+'">'+p.label+"</button>").join("")+"</div>";
+  h+='<div class="ctl"><button class="go" data-a="play">▶ Play</button><button data-a="step">⏭ Step</button><button data-a="reset">↺ Reset</button></div></div>'+
+     '<div class="body"><div class="viz"></div><div class="side"><div class="state"></div><div class="panel-t">What is happening</div><ol class="log"></ol></div></div><div class="status" aria-live="polite"></div></div>';
+  host.innerHTML=h;
+  const viz=Dia($(".viz",host),cfg.spec),status=$(".status",host),log=$(".log",host),stateEl=$(".state",host);
+  const bPlay=$('[data-a="play"]',host),bStep=$('[data-a="step"]',host);
+  let steps=[],ix=-1,busy=false,playing=false,gen=0;
+  function buttons(){const end=ix>=steps.length-1;bStep.disabled=end||playing;bPlay.disabled=end;bPlay.textContent=playing?"⏸ Pause":"▶ Play";
+    $$("[data-pick]",host).forEach(b=>b.classList.toggle("sel",b.dataset.pick===pick))}
+  function reset(){
+    gen++;playing=false;busy=false;ix=-1;const r=cfg.run(pick);steps=r.steps;viz.reset();
+    if(r.labels)Object.keys(r.labels).forEach(id=>viz.label(id,r.labels[id]));
+    log.innerHTML="";status.className="status";status.innerHTML=(cfg.picks?"Choose a task, then press ":"Press ")+"<b>Step</b> (one move at a time) or <b>Play</b>.";
+    if(cfg.side)cfg.side(stateEl,null);buttons();
+  }
+  async function step(){
+    if(busy||ix>=steps.length-1)return;
+    const g=gen;busy=true;ix++;const s=steps[ix];status.className="status run";
+    await viz.go(s,steps[ix-1]);
+    if(g!==gen)return;
+    status.innerHTML=s.say;const li=document.createElement("li");li.innerHTML=s.say;log.appendChild(li);log.scrollTop=log.scrollHeight;
+    if(cfg.side)cfg.side(stateEl,s);
+    if(ix>=steps.length-1){status.className="status end";if(cfg.onEnd)cfg.onEnd()}
+    busy=false;buttons();
+  }
+  async function play(){
+    if(playing){playing=false;buttons();return}
+    const g=gen;playing=true;buttons();
+    while(playing&&g===gen&&ix<steps.length-1){await step();if(g!==gen)return;await sleep(REDUCED?400:1100)}
+    if(g===gen){playing=false;buttons()}
+  }
+  host.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
+    if(b.dataset.a==="play")play();else if(b.dataset.a==="step")step();else if(b.dataset.a==="reset")reset();
+    else if(b.dataset.pick){pick=b.dataset.pick;reset()}});
+  reset();
+}
+
+/* ---------- Part 1: input → process → output ---------- */
+Player($("#ipo"),{
+  picks:[{k:"type",label:"⌨️ Type a letter"},{k:"save",label:"💾 Save an essay"},{k:"photo",label:"🖼️ Open a photo"},{k:"print",label:"🖨️ Print a page"}],
+  spec:{w:640,h:300,alt:"Input, processing, output and storage",
+    nodes:{in:{x:100,y:80,w:160,h:84,title:"⌨️ Input"},cpu:{x:320,y:80,w:160,h:84,title:"⚙️ Processing"},out:{x:540,y:80,w:160,h:84,title:"🖥️ Output"},sto:{x:320,y:238,w:160,h:84,title:"💾 Storage"}},
+    edges:[["in","cpu"],["cpu","out"],["cpu","sto"]]},
+  run(k){
+    const cpu="CPU + RAM";
+    if(k==="type")return {labels:{in:"Keyboard",cpu,out:"Monitor",sto:"SSD (not used)"},steps:[
+      {n:"in",say:"<b>Input:</b> you press the <b>A</b> key. The keyboard sends a code for that key."},
+      {n:"cpu",say:"<b>Processing:</b> the CPU works out which letter it is and where it must appear."},
+      {n:"out",say:"<b>Output:</b> the monitor shows the letter A. Storage was <b>not</b> used: nothing is saved yet."}]};
+    if(k==="save")return {labels:{in:"Mouse",cpu,out:"Monitor",sto:"SSD"},steps:[
+      {n:"in",say:"<b>Input:</b> you click the Save button with the mouse."},
+      {n:"cpu",say:"<b>Processing:</b> the CPU collects the essay from RAM and prepares it as a file."},
+      {n:"sto",say:"<b>Storage:</b> the file is written to the SSD. It will still be there after a power cut."},
+      {n:"cpu",say:"<b>Processing:</b> the SSD reports that the file is safe."},
+      {n:"out",say:"<b>Output:</b> the monitor shows \"Saved\"."}]};
+    if(k==="photo")return {labels:{in:"Mouse",cpu,out:"Monitor",sto:"SSD"},steps:[
+      {n:"in",say:"<b>Input:</b> you double-click a photo."},
+      {n:"cpu",say:"<b>Processing:</b> the CPU asks storage for that file."},
+      {n:"sto",say:"<b>Storage:</b> the photo file is read from the SSD."},
+      {n:"cpu",say:"<b>Processing:</b> the CPU turns the file into millions of coloured dots (pixels)."},
+      {n:"out",say:"<b>Output:</b> the monitor displays the photo."}]};
+    return {labels:{in:"Mouse",cpu,out:"Printer",sto:"SSD"},steps:[
+      {n:"in",say:"<b>Input:</b> you click Print."},
+      {n:"cpu",say:"<b>Processing:</b> the CPU asks storage for the document."},
+      {n:"sto",say:"<b>Storage:</b> the document is read from the SSD."},
+      {n:"cpu",say:"<b>Processing:</b> the CPU converts the page into instructions the printer understands."},
+      {n:"out",say:"<b>Output:</b> the printer prints the page. A printout is called <b>hard copy</b>."}]};
+  }});
+
+/* ---------- sort games ---------- */
+function SortGame(host,scoreEl,key,cats,items,onAll){
+  const ans=store.get("sort-"+key,{});
+  function paint(){
+    host.innerHTML=items.map((it,i)=>{const a=ans[i],has=a!==undefined,ok=has&&a===it[1];
+      return '<div class="sortcard '+(has?(ok?"ok":"bad"):"")+'"><div class="lab">'+it[0]+"</div>"+cats.map((c,ci)=>'<button data-i="'+i+'" data-v="'+ci+'" class="'+(a===ci?"sel":"")+'">'+c+"</button>").join("")+
+        (has?'<div class="why">'+(ok?"✔ "+it[2]:"✘ Not quite. Try again.")+"</div>":"")+"</div>"}).join("");
+    const right=items.filter((it,i)=>ans[i]===it[1]).length;
+    scoreEl.textContent=right+" of "+items.length+" sorted correctly.";
+    if(right===items.length&&onAll)onAll();
+  }
+  host.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;ans[+b.dataset.i]=+b.dataset.v;store.set("sort-"+key,ans);paint()});
+  paint();
+}
+const p1={a:false,b:false},p1done=()=>{if(p1.a&&p1.b)markDone(0)};
+SortGame($("#sortHS"),$("#sortHSscore"),"hs",["Hardware","Software"],[
+  ["🖱️ Mouse",0,"You can hold it in your hand."],
+  ["🪟 Windows 11",1,"An operating system: a program you install."],
+  ["📏 RAM module",0,"A physical circuit board that plugs into the motherboard."],
+  ["🌐 Google Chrome",1,"A web browser: an application program."],
+  ["🖨️ Printer",0,"A physical device."],
+  ["🛡️ Antivirus",1,"A utility program that protects the computer."]],()=>{p1.a=true;p1done()});
+SortGame($("#sortDev"),$("#sortDevScore"),"dev",["Input","Output","Storage","Processing"],[
+  ["⌨️ Keyboard",0,"It sends your key presses into the computer."],
+  ["🖥️ Monitor",1,"It shows results to you."],
+  ["💾 SSD",2,"It keeps files when the power is off."],
+  ["🧮 CPU",3,"It carries out the instructions."],
+  ["📠 Scanner",0,"It turns a paper page into data going in."],
+  ["🔊 Speakers",1,"Sound comes out to the user."],
+  ["🔑 Flash drive",2,"Portable storage that keeps files."],
+  ["🎤 Microphone",0,"It captures your voice as data going in."]],()=>{p1.b=true;p1done()});
+SortGame($("#sortSW"),$("#sortSWscore"),"sw",["Operating system","Utility","Application"],[
+  ["🪟 Windows 11",0,"It controls the hardware and runs all other programs."],
+  ["📝 Microsoft Word",2,"You use it to do a task: writing documents."],
+  ["🛡️ Antivirus",1,"It looks after the computer by removing malware."],
+  ["🤖 Android",0,"The operating system on most phones."],
+  ["💬 WhatsApp",2,"You use it to do a task: chatting."],
+  ["🧹 Disk cleanup",1,"It looks after the computer by removing junk files."],
+  ["🐧 Ubuntu Linux",0,"An open-source operating system."],
+  ["🌐 Google Chrome",2,"You use it to do a task: browsing the web."],
+  ["🗜️ File compression tool",1,"It maintains files by making them smaller."]],()=>markDone(3));
+
+/* ---------- Part 2: inside the case ---------- */
+function CaseSVG(host,build){
+  const P=(id,inner)=>'<g class="part'+(build?"":" in")+'" data-p="'+id+'">'+inner+"</g>";
+  const S=(id,x,y,w,h,label)=>build?'<g class="slot" data-s="'+id+'"><rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="6"/><text x="'+(x+w/2)+'" y="'+(y+h/2)+'">'+label+"</text></g>":"";
+  const blade=r=>'<ellipse cx="298" cy="74" rx="10" ry="20" fill="#9fb0c2" transform="rotate('+r+' 298 98)"/>';
+  let h='<svg class="pc'+(build?" build":"")+'" viewBox="0 0 520 390" role="img" aria-label="Inside of a desktop computer case">'+
+    '<rect x="4" y="4" width="512" height="382" rx="14" fill="#2b3440" stroke="#11161c" stroke-width="3"/>'+
+    '<g'+(build?"":' class="part in" data-p="mobo"')+'><rect x="196" y="20" width="304" height="350" rx="6" fill="#17624f" stroke="#0d3f33" stroke-width="2"/>'+
+      '<path d="M220 180h150v-20M240 300h200M460 60v120h-20M230 320v30h120" fill="none" stroke="#2a8a70" stroke-width="2"/><text x="330" y="340">Motherboard</text></g>'+
+    '<rect x="256" y="56" width="84" height="84" fill="#0d3f33" stroke="#9fb0c2"/>'+
+    '<rect x="392" y="44" width="14" height="150" fill="#0d3f33"/><rect x="416" y="44" width="14" height="150" fill="#0d3f33"/>'+
+    '<rect x="214" y="240" width="220" height="10" fill="#0d3f33"/>'+
+    (build?'<circle cx="468" cy="300" r="13" fill="#c9ced6" stroke="#7d8da0"/>':P("cmos",'<circle cx="468" cy="300" r="13" fill="#c9ced6" stroke="#7d8da0" stroke-width="2"/>'))+
+    S("psubay",20,20,160,90,"PSU bay")+S("socket",250,50,96,96,"CPU socket")+S("dimm",384,38,54,162,"RAM")+S("pcie",208,216,240,56,"Expansion slot")+S("bay",20,270,160,90,"Drive bay")+
+    P("psu",'<rect x="20" y="20" width="160" height="90" rx="6" fill="#5a6370" stroke="#11161c" stroke-width="2"/><circle cx="68" cy="65" r="30" fill="#3a424d" stroke="#2b3440" stroke-width="3"/><text x="135" y="65">PSU</text>')+
+    P("cpu",'<rect x="264" y="64" width="68" height="68" rx="4" fill="#c9ced6" stroke="#7d8da0" stroke-width="2"/><text class="dk" x="298" y="98">CPU</text>')+
+    P("fan",'<circle cx="298" cy="98" r="46" fill="#39424f" stroke="#11161c" stroke-width="3"/><g class="blades">'+blade(0)+blade(90)+blade(180)+blade(270)+'</g><circle cx="298" cy="98" r="9" fill="#11161c"/><text x="298" y="158">CPU cooler</text>')+
+    P("ram",'<rect x="392" y="44" width="14" height="150" fill="#2f7fd1" stroke="#164a80"/><rect x="416" y="44" width="14" height="150" fill="#2f7fd1" stroke="#164a80"/><text x="411" y="208">RAM</text>')+
+    P("gpu",'<rect x="208" y="216" width="240" height="56" rx="6" fill="#7a2633" stroke="#40121a" stroke-width="2"/><circle cx="262" cy="244" r="19" fill="#40121a"/><circle cx="326" cy="244" r="19" fill="#40121a"/><text x="400" y="244">Graphics card</text>')+
+    P("ssd",'<rect x="34" y="284" width="132" height="62" rx="6" fill="#1d2530" stroke="#9fb0c2" stroke-width="2"/><text x="100" y="315">SSD 256 GB</text>')+
+    "</svg>";
+  host.innerHTML=h;return $("svg",host);
+}
+(function(){
+  const INFO={
+    psu:["🔌 Power supply unit (PSU)","Changes mains electricity (230 V AC) into the low, steady voltages the parts need.","The heart: it pumps power to everything.","Watts (W), for example 500 W","Completely dead: no lights, no fans."],
+    mobo:["🟩 Motherboard","The main circuit board. Every part plugs into it, and it carries data between them.","The road network of a town.","Form factor (ATX, micro-ATX) and socket type","Parts cannot communicate; the PC will not start."],
+    cpu:["🧮 CPU (processor)","Carries out every instruction: calculates, compares and controls the other parts.","The brain, or the chef in the kitchen.","Speed in gigahertz (GHz) and number of cores","Power light comes on, but nothing runs."],
+    fan:["🌀 CPU cooler (heat sink + fan)","Pulls heat away from the CPU so that it does not burn out.","The radiator of a car.","Fan size and speed (RPM)","The CPU overheats and the PC switches itself off."],
+    ram:["📏 RAM (memory)","Holds the programs and data that are open right now. Very fast, but it forgets everything when the power goes off.","The kitchen counter: more space means more open at once.","Gigabytes (GB), for example 8 GB","Beeps at start-up and no picture."],
+    gpu:["🎮 Graphics card (GPU)","Creates the picture that is sent to the monitor. Needed for games, video editing and design work.","The artist who draws every frame.","Video memory in GB","No picture, or a poor one. Many PCs can fall back on graphics built into the motherboard."],
+    ssd:["💾 Storage drive (SSD or HDD)","Keeps the operating system, programs and your files permanently, even without power.","The pantry or filing cabinet.","Gigabytes or terabytes (GB / TB)","\"No boot device found\": the operating system cannot be loaded."],
+    cmos:["🔋 CMOS battery","A small coin battery that keeps the clock running and the firmware settings saved while the PC is off.","The battery in a wall clock.","3 volts (type CR2032)","The date and time reset every time you start up."]};
+  const ORDER=["psu","mobo","cpu","fan","ram","gpu","ssd","cmos"],seen=new Set(store.get("seen",[]));
+  const svg=CaseSVG($("#pcExplore"),false);
+  function mission(){$("#exMission").innerHTML=ORDER.map(k=>'<li><button data-k="'+k+'" class="'+(seen.has(k)?"ok":"")+'">'+INFO[k][0].replace(/^\S+\s/,"").replace(/ \(.*/,"")+"</button></li>").join("")}
+  function pickPart(k){const i=INFO[k];
+    $$(".part",svg).forEach(x=>x.classList.toggle("sel",x.dataset.p===k));
+    $("#pcInfo").innerHTML="<h3>"+i[0]+"</h3><dl><dt>Job</dt><dd>"+i[1]+"</dd><dt>Think of</dt><dd>"+i[2]+"</dd><dt>Measured in</dt><dd>"+i[3]+"</dd><dt>If it fails</dt><dd>"+i[4]+"</dd></dl>";
+    seen.add(k);store.set("seen",[...seen]);mission()}
+  svg.addEventListener("click",e=>{const g=e.target.closest(".part");if(g)pickPart(g.dataset.p)});
+  $("#exMission").addEventListener("click",e=>{const b=e.target.closest("button");if(b)pickPart(b.dataset.k)});
+  mission();
+
+  /* build */
+  const PARTS=[["psu","🔌 Power supply"],["cpu","🧮 CPU"],["fan","🌀 CPU cooler"],["ram","📏 RAM"],["ssd","💾 SSD"],["gpu","🎮 Graphics card"]];
+  const NAME=Object.fromEntries(PARTS.map(p=>[p[0],p[1].replace(/^\S+\s/,"")]));
+  const HOME={psu:"psubay",cpu:"socket",fan:"socket",ram:"dimm",ssd:"bay",gpu:"pcie"};
+  const WHERE={psu:"the PSU bay in the top corner of the case",cpu:"the square socket on the motherboard",fan:"on top of the CPU",ram:"the two long thin slots next to the CPU",ssd:"the drive bay at the bottom of the case",gpu:"the long expansion slot across the motherboard"};
+  const inst=new Set(store.get("build",[]));let sel=null,powered=false;
+  const bsvg=CaseSVG($("#pcBuild"),true),msg=t=>{$("#buildMsg").innerHTML=t};
+  $("#tray").innerHTML=PARTS.map(p=>'<button data-p="'+p[0]+'">'+p[1]+"</button>").join("");
+  function screen(t,cls){const s=$("#screen");s.textContent=t;s.className="screen "+(cls||"")}
+  function paint(){
+    $$("#tray button").forEach(b=>{b.disabled=inst.has(b.dataset.p);b.classList.toggle("sel",b.dataset.p===sel)});
+    $$(".part",bsvg).forEach(g=>g.classList.toggle("in",inst.has(g.dataset.p)));
+    const full={psubay:inst.has("psu"),dimm:inst.has("ram"),pcie:inst.has("gpu"),bay:inst.has("ssd"),socket:inst.has("cpu")&&inst.has("fan")};
+    $$(".slot",bsvg).forEach(g=>{g.classList.toggle("full",full[g.dataset.s]);if(g.dataset.s==="socket")$("text",g).textContent=inst.has("cpu")?"":"CPU socket"});
+    bsvg.classList.toggle("on",powered&&inst.has("psu")&&inst.has("cpu")&&inst.has("fan"));
+    $("#led").classList.toggle("on",powered&&inst.has("psu"));
+    $("#pwr").textContent=powered?"⏻ Switch off":"⏻ Power button";
+  }
+  function off(){powered=false;screen("(no signal)","off")}
+  $("#tray").addEventListener("click",e=>{const b=e.target.closest("button");if(!b||b.disabled)return;sel=b.dataset.p;msg("You are holding the <b>"+NAME[sel]+"</b>. Click the place in the case where it fits.");paint()});
+  bsvg.addEventListener("click",e=>{const g=e.target.closest(".slot");if(!g)return;const s=g.dataset.s;
+    const no=t=>{g.classList.remove("no");void g.getBoundingClientRect();g.classList.add("no");setTimeout(()=>g.classList.remove("no"),400);msg(t)};
+    if(!sel)return msg("Pick a part from the tray first.");
+    if(HOME[sel]!==s)return no("✘ The <b>"+NAME[sel]+"</b> does not fit there. Hint: it goes in "+WHERE[sel]+".");
+    if(sel==="fan"&&!inst.has("cpu"))return no("✘ Install the <b>CPU</b> first. The cooler sits on top of it.");
+    if(sel==="cpu"&&inst.has("cpu"))return;
+    inst.add(sel);store.set("build",[...inst]);off();
+    msg("✔ <b>"+NAME[sel]+"</b> installed. "+(inst.size===PARTS.length?"All parts are in. Press the power button!":(PARTS.length-inst.size)+" part(s) still in the tray. You can also press the power button now to see what happens."));
+    sel=null;paint()});
+  $("#rebuild").onclick=()=>{inst.clear();store.set("build",[]);sel=null;off();msg("The case is empty again. Try leaving one part out this time.");paint()};
+  $("#pwr").onclick=()=>{
+    if(powered){off();msg("Switched off.");paint();return}
+    powered=true;const has=k=>inst.has(k);
+    if(!has("psu")){screen("(no signal)","off");msg("💀 <b>Nothing happens.</b> No lights, no fans. Without a <b>power supply</b>, no part gets electricity.")}
+    else if(!has("cpu")){screen("(no signal)","off");msg("💡 The power light comes on, but nothing else. Without a <b>CPU</b>, no instruction can be carried out.")}
+    else if(!has("fan")){screen("CPU temperature too high!\nShutting down…","err");msg("🔥 The CPU overheats within seconds and the PC switches off to protect itself. Install the <b>cooler</b>.")}
+    else if(!has("ram")){screen("(no signal)","off");msg("🔊 <b>Beep… beep… beep.</b> The self-test failed: no <b>RAM</b> found, so there is nowhere to load a program.")}
+    else if(!has("ssd")){screen("POST passed\n\nNo boot device found.\nInsert boot disk and press any key.","err");msg("💾 The hardware test passed, but there is no <b>storage drive</b> to load the operating system from.")}
+    else{screen("POST passed ✔\nLoading operating system…\n\nWelcome, technician!");
+      msg("✅ <b>It boots!</b> "+(has("gpu")?"All six parts are working together.":"It works without the graphics card because this motherboard has basic graphics built in. Add the GPU for games and design work."));
+      $("#buildDone").classList.remove("hidden");markDone(1)}
+    paint()};
+  off();paint();
+})();
+
+/* ---------- Part 3: machine cycle ---------- */
+(function(){
+  const PROG=[["LOAD 5","put the number 5 in the accumulator"],["ADD 3","add 3 to the accumulator"],["STORE 10","copy the accumulator into RAM address 10"],["OUTPUT","send the accumulator to the monitor"],["HALT","stop the program"]];
+  Player($("#cycle"),{
+    spec:{w:470,h:300,alt:"RAM, CPU and monitor",
+      nodes:{ram:{x:110,y:90,w:180,h:88,title:"📋 RAM",sub:"program + data"},cpu:{x:350,y:90,w:180,h:88,title:"⚙️ CPU",sub:"control unit + ALU"},out:{x:350,y:240,w:180,h:76,title:"🖥️ Monitor",sub:"output"}},
+      edges:[["ram","cpu"],["cpu","out"]]},
+    onEnd(){},
+    run(){
+      const S=[];let pc=0,ir="–",acc=0,m10="",out="";
+      const snap=(n,phase,say,hi)=>S.push({n,phase,say,hi,pc,ir,acc,m10,out});
+      for(let i=0;i<PROG.length;i++){
+        snap("ram",0,"The program counter (PC) says <b>"+pc+"</b>. The CPU asks RAM for the instruction at address "+pc+".",pc);
+        const at=pc;ir=PROG[i][0];pc++;
+        snap("cpu",0,"<b>FETCH:</b> <code>"+ir+"</code> is copied from RAM into the CPU. The PC moves on to "+pc+".",at);
+        snap("cpu",1,"<b>DECODE:</b> the control unit works out that <code>"+ir+"</code> means: "+PROG[i][1]+".",at);
+        if(i===0){acc=5;snap("cpu",2,"<b>EXECUTE:</b> the accumulator (ACC) now holds <b>5</b>.",at)}
+        else if(i===1){acc=8;snap("cpu",2,"<b>EXECUTE:</b> the ALU adds 5 + 3. ACC now holds <b>8</b>.",at)}
+        else if(i===2){m10=8;snap("ram",2,"<b>EXECUTE:</b> the value 8 travels back to RAM and is written at address 10.",10)}
+        else if(i===3){out=8;snap("out",2,"<b>EXECUTE:</b> the value 8 is sent to the monitor.",at)}
+        else snap("cpu",2,"<b>EXECUTE:</b> the program stops. Five instructions needed five full cycles. A real CPU does billions per second.",at);
+      }
+      return {steps:S}},
+    side(el,s){
+      const st=s||{phase:-1,pc:0,ir:"–",acc:0,m10:"",out:"",hi:-1};
+      el.innerHTML='<div class="phases">'+["FETCH","DECODE","EXECUTE"].map((p,i)=>'<span class="'+(st.phase===i?"on":"")+'">'+p+"</span>").join("")+"</div>"+
+        '<div class="grid2" style="gap:.6rem"><div><div class="panel-t" style="margin-top:0">Inside the CPU</div><table class="vars"><tr><th>Register</th><th>Value</th></tr><tr><td>PC</td><td>'+st.pc+"</td></tr><tr><td>IR</td><td>"+esc(st.ir)+"</td></tr><tr><td>ACC</td><td>"+st.acc+"</td></tr></table>"+
+        '<div class="panel-t">Monitor</div><div class="shell" style="min-height:1.8em">'+st.out+"</div></div>"+
+        '<div><div class="panel-t" style="margin-top:0">Inside RAM</div><table class="vars"><tr><th>Address</th><th>Contents</th></tr>'+PROG.map((p,i)=>'<tr class="'+(st.hi===i?"hi":"")+'"><td>'+i+"</td><td>"+p[0]+"</td></tr>").join("")+
+        '<tr class="'+(st.hi===10?"hi":"")+'"><td>10</td><td>'+(st.m10===""?"(empty)":st.m10)+"</td></tr></table></div></div>";
+    }});
+})();
+
+/* ---------- Part 3: RAM vs storage ---------- */
+(function(){
+  let on=true,ram=100,ssd=100;const msg=t=>{$("#mMsg").innerHTML=t};
+  function paint(){
+    $("#mRam").classList.toggle("dead",!on);
+    $("#mRamIn").innerHTML=!on?'<span class="small">⚫ No power. RAM is completely empty.</span>':ram===null?'<span class="small">(nothing open)</span>':
+      '<span class="fchip">essay.docx · '+ram+" words</span>"+(ram>ssd?'<span class="fchip warn">⚠ '+(ram-ssd)+" words not saved yet</span>":'<span class="fchip safe">all saved</span>');
+    $("#mSsdIn").innerHTML='<span class="fchip safe">essay.docx · '+ssd+" words</span>";
+    $("#mType").disabled=$("#mSave").disabled=!on||ram===null;$("#mCut").disabled=!on;$("#mOpen").disabled=on&&ram!==null;
+  }
+  $("#mType").onclick=()=>{ram+=50;msg("You typed 50 more words. They exist <b>only in RAM</b> until you save.");paint()};
+  $("#mSave").onclick=()=>{ssd=ram;msg("💾 Saved. The essay in RAM was <b>copied</b> to the SSD. Both now hold "+ssd+" words.");paint()};
+  $("#mCut").onclick=()=>{const lost=ram===null?0:ram-ssd;on=false;ram=null;
+    msg(lost>0?"💥 <b>Power cut!</b> RAM is wiped. You lost <b>"+lost+" words</b> that were never saved. The SSD still has the last saved version.":"💥 <b>Power cut!</b> RAM is wiped, but you lost <b>nothing</b>: everything was already saved on the SSD.");paint()};
+  $("#mOpen").onclick=()=>{on=true;ram=ssd;msg("The PC starts and you open the essay. It is <b>copied from the SSD into RAM</b>: "+ssd+" words.");paint()};
+  msg("Your essay is open (in RAM) and saved (on the SSD). Try typing, then cut the power.");paint();
+})();
+
+/* ---------- Part 3: units ---------- */
+(function(){
+  const DEV=[["🔑 4 GB flash drive",4],["📱 64 GB phone",64],["💾 256 GB SSD",256],["🗄️ 1 TB hard drive",1024]];let cur=0,raf=0;
+  $("#uOps").innerHTML=DEV.map((d,i)=>'<button data-i="'+i+'" style="font-family:inherit;font-size:.9rem">'+d[0]+"</button>").join("");
+  const shown={uP:0,uS:0,uM:0};
+  function paint(){
+    $$("#uOps button").forEach((b,i)=>b.classList.toggle("sel",i===cur));
+    const mb=DEV[cur][1]*1024,target={uP:Math.floor(mb/4),uS:Math.floor(mb/5),uM:Math.floor(mb/2048)},from={...shown},t0=performance.now();
+    cancelAnimationFrame(raf);
+    (function f(t){const k=REDUCED?1:Math.min(1,(t-t0)/500);Object.keys(target).forEach(id=>{shown[id]=from[id]+(target[id]-from[id])*k;$("#"+id).textContent=fmt(shown[id])});if(k<1)raf=requestAnimationFrame(f)})(t0);
+    $("#uSay").innerHTML="Working: "+DEV[cur][1]+" GB × 1 024 = <b>"+fmt(mb)+" MB</b>. Divide by the size of one file to see how many fit.";
+  }
+  $$("#uOps button").forEach(b=>b.onclick=()=>{cur=+b.dataset.i;paint()});paint();
+})();
+
+/* ---------- practice questions (not locked) ---------- */
+function practice(host,key,qs,onAll){
+  const got=new Set(store.get("pq-"+key,[]));
+  qs.forEach((q,qi)=>{const d=document.createElement("div");d.className="q";
+    d.innerHTML="<b>"+(qi+1)+".</b> "+q.q+'<div class="opts">'+q.o.map((o,i)=>'<button data-i="'+i+'">'+o+"</button>").join("")+'</div><div class="why hidden"></div>';
+    $$("button",d).forEach(b=>b.onclick=()=>{const i=+b.dataset.i,ok=i===q.a;
+      $$("button",d).forEach(x=>{x.classList.remove("ok","bad");if(+x.dataset.i===i)x.classList.add(ok?"ok":"bad")});
+      const w=$(".why",d);w.classList.remove("hidden");w.classList.toggle("badw",!ok);w.innerHTML=ok?"✔ "+q.why:"✘ Not quite. "+q.hint;
+      if(ok){got.add(qi);store.set("pq-"+key,[...got]);if(got.size===qs.length&&onAll)onAll()}});
+    host.appendChild(d)});
+  if(got.size===qs.length&&onAll)onAll();
+}
+practice($("#pq3"),"3",[
+  {q:"Which of these <b>loses its contents</b> when the power goes off?",o:["SSD","RAM","Flash drive"],a:1,why:"RAM is volatile: it needs power to remember.",hint:"Think of the power-cut demo: which box went empty?"},
+  {q:"A PC with 4 GB of RAM becomes very slow when many programs are open. What is the best upgrade?",o:["A bigger monitor","A larger hard drive","More RAM"],a:2,why:"More RAM is a bigger counter: more programs can be open at once. A larger drive only holds more saved files.",hint:"Which part holds the programs that are open right now?"},
+  {q:"In the <b>fetch</b> step, where does the instruction come from?",o:["RAM","The monitor","The keyboard"],a:0,why:"The program is loaded into RAM, and the CPU fetches one instruction at a time from there.",hint:"Watch where the gold dot starts in the machine cycle."},
+  {q:"How many 2 GB movies fit on a 16 GB flash drive?",o:["4","8","32"],a:1,why:"16 ÷ 2 = 8 movies.",hint:"Divide the size of the drive by the size of one file."},
+],()=>markDone(2));
+practice($("#pq5"),"5",[
+  {q:"You press the power button. <b>Nothing at all</b> happens: no lights, no fans.",o:["The RAM","The power cable and power supply","The graphics card"],a:1,why:"No sign of life means no electricity. Check the wall plug and cable first, then the PSU.",hint:"Which part gives electricity to all the others?"},
+  {q:"The fans spin and you hear <b>three beeps</b>, but the screen stays black.",o:["The RAM is loose or faulty","The SSD is full","The mouse is unplugged"],a:0,why:"Beeps come from the power-on self-test. The most common cause is RAM that is not pushed in properly.",hint:"In the build game, which missing part caused beeping?"},
+  {q:"The screen shows <b>\"No boot device found\"</b>.",o:["The monitor cable","The CPU cooler","The storage drive and its cable"],a:2,why:"The firmware cannot find a drive with an operating system on it.",hint:"Where is the operating system kept?"},
+  {q:"The PC works for ten minutes, then <b>switches itself off</b>. The case feels very hot.",o:["The keyboard","The CPU cooler: fan blocked with dust or not spinning","The CMOS battery"],a:1,why:"The CPU protects itself by shutting down when it overheats. Clean or replace the cooler.",hint:"Which part removes heat?"},
+  {q:"A new printer is plugged in and switched on, but Windows shows <b>\"Unknown device\"</b>.",o:["Install the printer's driver","Replace the power supply","Add more RAM"],a:0,why:"This is a software fault. The driver is the translator between the operating system and the printer.",hint:"The hardware is fine. Which software lets the OS talk to a device?"},
+]);
+
+/* ---------- Part 4: layers ---------- */
+(function(){
+  const T={save:["Word","SSD","save this file","finds free space and uses the SSD's <b>driver</b> to give exact orders","The SSD writes the data.","The OS reports back: the file is safe.","Word shows \"Saved\"."],
+    print:["Chrome","Printer","print this page","puts the page in the print queue and uses the printer's <b>driver</b> to translate it","The printer prints the page.","The OS reports back: printing is finished.","Chrome closes the print window."],
+    music:["Music player","Speakers","play this song","shares out CPU time and uses the sound <b>driver</b> to send the sound data","The speakers produce the sound.","The OS keeps feeding the next piece of the song.","The music player moves its progress bar."]};
+  Player($("#layers"),{
+    picks:[{k:"save",label:"💾 Save a file"},{k:"print",label:"🖨️ Print a page"},{k:"music",label:"🎵 Play a song"}],
+    spec:{w:360,h:384,alt:"User, application, operating system and hardware layers",
+      nodes:{user:{x:180,y:44,w:260,h:68,title:"🙋 User"},app:{x:180,y:142,w:260,h:68,title:"📱 Application software"},os:{x:180,y:240,w:260,h:68,title:"🪟 Operating system"},hw:{x:180,y:338,w:260,h:68,title:"🔩 Hardware"}},
+      edges:[["user","app"],["app","os"],["os","hw"]]},
+    run(k){const t=T[k];return {labels:{user:"you",app:t[0],os:"Windows + drivers",hw:t[1]},steps:[
+      {n:"user",say:"You click a button in "+t[0]+"."},
+      {n:"app",say:"<b>"+t[0]+"</b> cannot touch the hardware itself. It asks the operating system: \"please "+t[2]+"\"."},
+      {n:"os",say:"The <b>operating system</b> "+t[3]+"."},
+      {n:"hw",say:"<b>Hardware:</b> "+t[4]},
+      {n:"os",say:t[5]},
+      {n:"app",say:t[6]},
+      {n:"user",say:"✔ You see the result. Every request went <b>down through the OS</b> and came back the same way."}]}}});
+})();
+
+/* ---------- Part 4: boot order ---------- */
+(function(){
+  const LINES=["⏻ You press the power button; the PSU sends power to the motherboard","📟 The firmware (BIOS / UEFI) starts from its chip","🔍 POST: the firmware tests the CPU, RAM and other hardware","💾 The firmware looks for a drive with an operating system","📥 The operating system is loaded from storage into RAM","🙋 The login screen appears: ready for the user"];
+  const MIX=[3,0,5,2,4,1];let order=store.get("boot",MIX.slice()),checked=false;
+  if(!Array.isArray(order)||order.length!==LINES.length)order=MIX.slice();
+  const host=$("#boot");
+  function paint(){
+    host.innerHTML=order.map((li,pos)=>'<div class="pline '+(checked?(li===pos?"ok":"bad"):"")+'"><button data-p="'+pos+'" data-d="-1" aria-label="Move up"'+(pos===0?" disabled":"")+'>▲</button><button data-p="'+pos+'" data-d="1" aria-label="Move down"'+(pos===order.length-1?" disabled":"")+'>▼</button><pre style="font-family:inherit;white-space:normal">'+LINES[li]+"</pre></div>").join("");
+    const all=order.every((li,pos)=>li===pos);
+    $("#bootDone").classList.toggle("hidden",!(checked&&all));
+    $("#bootMsg").textContent=checked&&!all?order.filter((li,pos)=>li===pos).length+" of "+LINES.length+" steps are in the right place. Move the red ones.":"";
+  }
+  host.addEventListener("click",e=>{const b=e.target.closest("button");if(!b||b.disabled)return;const p=+b.dataset.p,q=p+ +b.dataset.d;
+    [order[p],order[q]]=[order[q],order[p]];checked=false;store.set("boot",order);paint()});
+  $("#bootCheck").onclick=()=>{checked=true;paint()};
+  $("#bootMix").onclick=()=>{order=MIX.slice();checked=false;store.set("boot",order);paint()};
+  paint();
+})();
+
+/* ---------- exit quiz (one attempt, lock in) ---------- */
+(function(){
+  const qs=[
+    ["Which of these is <b>hardware</b>?",["Windows 11","A RAM module","An antivirus program"],1],
+    ["Which part <b>carries out</b> the instructions of a program?",["RAM","CPU","SSD"],1],
+    ["The power goes off while you are typing. Your unsaved work is lost because it was only in…",["RAM","the SSD","the flash drive"],0],
+    ["Which of these is an <b>input</b> device?",["Monitor","Scanner","Speakers"],1],
+    ["What is the correct order of the machine cycle?",["Fetch, decode, execute","Decode, fetch, execute","Execute, fetch, decode"],0],
+    ["Which of these is <b>system software</b>?",["Microsoft Excel","Windows 11","WhatsApp"],1],
+    ["One gigabyte (GB) is…",["1 024 KB","1 024 MB","1 024 TB"],1],
+    ["A PC shows \"No boot device found\". What do you check first?",["The monitor cable","The storage drive and its cable","The speakers"],1]];
+  const K=k=>"challenge-quiz-"+k,N=qs.length;
+  let picks=store.get(K("picks"),{}),lock=store.get(K("lock"),null);if(lock)picks=lock.picks;
+  let armed=0;const btn=$("#quizLock"),host=$("#quiz");
+  const els=qs.map(([q,opts],qi)=>{const d=document.createElement("div");d.className="q";
+    d.innerHTML="<b>"+(qi+1)+".</b> "+q+'<div class="opts">'+opts.map((o,i)=>'<button data-i="'+i+'">'+esc(o)+"</button>").join("")+"</div>";
+    $$("button",d).forEach(b=>b.onclick=()=>{if(lock)return;picks[qi]=+b.dataset.i;store.set(K("picks"),picks);paint()});host.appendChild(d);return d});
+  btn.onclick=()=>{
+    if(lock||Object.keys(picks).length<N)return;
+    if(Date.now()>armed){armed=Date.now()+4000;btn.textContent="Sure? Click again to lock – no changes after this";return}
+    const score=qs.filter((q,i)=>picks[i]===q[2]).length;
+    lock={picks:{...picks},score,at:new Date().toTimeString().slice(0,5)};store.set(K("lock"),lock);markDone(4);paint()};
+  function paint(){
+    const shown=!!lock&&store.get(K("shown"),false);
+    els.forEach((d,qi)=>$$("button",d).forEach(b=>{const i=+b.dataset.i;b.classList.toggle("sel",picks[qi]===i);b.disabled=!!lock;
+      b.classList.toggle("ok",shown&&i===qs[qi][2]);b.classList.toggle("bad",shown&&picks[qi]===i&&i!==qs[qi][2])}));
+    const left=N-Object.keys(picks).length;
+    if(!lock){btn.disabled=left>0;if(Date.now()>armed)btn.textContent="🔒 Lock in my answers";
+      $("#quizLeft").textContent=left?left+" still to answer":"All answered – lock in when you're sure!";return}
+    $("#quizBar").classList.add("hidden");const r=$("#quizResult");r.classList.remove("hidden");const s=lock.score;
+    r.innerHTML='<div class="scorebig">Your locked-in score<b>'+s+" / "+N+"</b>"+(s===N?"🏆 Perfect: Chief Technician!":s>=6?"🥈 Sharp!":s>=4?"🔧 Good effort!":"🩺 Revisit Parts 2 and 3!")+
+      '<div class="small">Locked at '+lock.at+"</div></div>"+
+      (shown?"":'<p style="text-align:center"><button class="btn" data-show="1">Show me the answers</button><br><span class="small">Wait for your lecturer – no spoilers for your neighbours!</span></p>');
+    const sb=$("[data-show]",r);if(sb)sb.onclick=()=>{store.set(K("shown"),true);paint()};
+    if(shown){$("#badge").classList.remove("hidden");$("#badgeTxt").textContent=s+" / "+N+" on the exit quiz · "+done.size+" of "+blocks.length+" parts completed."}
+  }
+  $("#quizReset").onclick=()=>{["picks","lock","shown"].forEach(k=>{try{localStorage.removeItem(PFX+K(k))}catch(e){}});location.reload()};
+  paint();
+})();
+
+$("#resetAll").onclick=()=>{try{Object.keys(localStorage).filter(k=>k.startsWith(PFX)&&!k.includes("challenge-")).forEach(k=>localStorage.removeItem(k))}catch(e){}location.reload()};
+show(cur);
+})();
+</script>
+</body>
+</html>

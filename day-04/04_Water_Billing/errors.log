@@ -1,0 +1,10 @@
+Line 21: One or more required fields are missing | MISSING,Name,,120,Soshanguve
+Line 41: Duplicate meter number: M5040 | M5040,Different Person,100,110,Mamelodi
+Line 61: Previous or current reading is not numeric | BAD60,Test Person,abc,120,Ga-Rankuwa
+Line 81: Readings must be non-negative, finite numbers | BAD80,Test Person,-4,120,Mamelodi
+Line 101: Current reading is below previous reading | BAD100,Test Person,300,200,Mamelodi
+Line 121: One or more required fields are missing | BAD120,,100,120,Mamelodi
+Line 141: One or more required fields are missing | BAD140,Test Person,100,120,
+Line 161: Expected exactly five comma-separated fields | BAD160,Test Person,100
+Line 181: Readings must be non-negative, finite numbers | BAD180,Test Person,100,-2,Mamelodi
+Line 201: Readings must be non-negative, finite numbers | BAD200,Test Person,100,NaN,Mamelodi
